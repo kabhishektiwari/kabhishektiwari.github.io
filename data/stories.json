@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "My First Story",
+    "authorId": "k_abhishektiwari",
+    "about": "A short introduction about this story.",
+    "body": "<p>This is the first paragraph.</p><p>This is the second paragraph.</p>",
+    "createdAt": "06/02/2026 10:30 AM"
+  },
+  {
+    "id": 2,
+    "title": "Another Story",
+    "authorId": "k_abhishektiwari",
+    "about": "",
+    "body": "<p>Another story content here.</p>",
+    "createdAt": "06/02/2026 11:15 AM"
+  }
+]

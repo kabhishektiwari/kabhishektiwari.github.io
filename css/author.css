@@ -1,0 +1,22 @@
+.author-card {
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  padding: 30px;
+}
+
+.author-card img {
+  width: 120px;
+  border-radius: 50%;
+}
+
+#bio {
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: justify;
+  hyphens: auto;
+}
+
+#bio p {
+  margin-bottom: 1.2em;
+}

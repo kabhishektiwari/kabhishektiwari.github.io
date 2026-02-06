@@ -1,0 +1,27 @@
+article {
+  max-width: 720px;
+  margin: auto;
+  padding: 20px;
+}
+
+.meta {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#content p {
+  line-height: 1.9;
+  margin-bottom: 1.4em;
+}
+
+.author-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #1e293b;
+}

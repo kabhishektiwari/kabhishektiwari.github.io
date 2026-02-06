@@ -1,0 +1,18 @@
+#stories {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.story-card {
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.story-title {
+  font-size: 22px;
+  font-weight: bold;
+}
