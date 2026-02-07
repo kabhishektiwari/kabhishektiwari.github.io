@@ -2,7 +2,7 @@ body {
   margin: 0;
   font-family: system-ui, sans-serif;
   background: #ffffff;
-  color: red;
+  color: black;
 }
 
 header {
@@ -21,6 +21,7 @@ a {
   display: block;
   margin: 20px;
 }
+
 
 
 
