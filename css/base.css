@@ -1,8 +1,8 @@
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: #020617;
-  color: #e5e7eb;
+  background: rgba(255,255,255);
+  color: rgba(18,18,18);
 }
 
 header {
@@ -21,3 +21,4 @@ a {
   display: block;
   margin: 20px;
 }
+
