@@ -108,8 +108,8 @@ header {
 
 .site-title {
   justify-self: center;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 750;
   color: #121212;
   text-decoration: none;
 }
@@ -127,3 +127,4 @@ a {
   display: block;
   margin: 20px;
 }
+
