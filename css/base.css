@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: rgba(255,255,255);
+  background: #ffffff;
   color: rgba(18,18,18);
 }
 
@@ -21,4 +21,5 @@ a {
   display: block;
   margin: 20px;
 }
+
 
