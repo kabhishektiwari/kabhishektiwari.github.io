@@ -1,11 +1,11 @@
 [
   {
     "id": 1,
-    "title": "My First Story",
+    "title": "Nepal Ki Baraat",
     "authorId": "k_abhishektiwari",
-    "about": "A short introduction about this story.",
-    "body": "<p>This is the first paragraph.</p><p>This is the second paragraph.</p>",
-    "createdAt": "06/02/2026 10:30 AM"
+    "about": "Nepal ke baraat ka lutf with bagal wali ka wifi.",
+    "body": "<p>Jab kyi din se shaadi ki taiyaari ho aur kapde adhik ho par time kam ho to ek din me kyi dress change karne hi padte hai.</p><p>Nepal me baaraat ghumne ka maja uthao aur hn bhojpuri gaane sunna mat bhoolna aur dance dekhna to bilkul bhi mat bhoolna.</p>",
+    "createdAt": "11/03/2026 10:00 PM"
   },
   {
     "id": 2,
@@ -16,3 +16,4 @@
     "createdAt": "06/02/2026 11:15 AM"
   }
 ]
+
