@@ -1,24 +1,28 @@
 [
-    {  "id": 3,
+  {
+    "id": 3,
     "title": "15 JUNE 2026",
     "authorId": "k_abhishektiwari",
     "about": "",
-    "body": "<p></p>",
-    "createdAt": "00/06/2026 11:15 AM" },
-  
-  { "id": 2,
+    "body": "",
+    "createdAt": "15/06/2026 11:15 AM"
+  },
+
+  {
+    "id": 2,
     "title": "14 JUNE 2026",
     "authorId": "k_abhishektiwari",
     "about": "Nothing to write",
-    "body": "<p>I understand things when it only be in mind and not even turned in action</p><p>I don't need any words to communicate but just the mindgame tells me the whole story.</p>",
-    "createdAt": "12/03/2026 09:00 PM" },
-  
-  {  "id": 1,
+    "body": "<p>I understand things best when they exist only in the mind and have not yet been turned into action.</p><p>I don't always need words to communicate; the mind itself often tells the whole story.</p>",
+    "createdAt": "14/06/2026 09:00 PM"
+  },
+
+  {
+    "id": 1,
     "title": "Dalal Street Roars on Middle East Truce Hopes; SpaceX Debuts at $2.1 Trillion",
     "authorId": "k_abhishektiwari",
     "about": "This report analyzes a powerful global market surge triggered by a draft US-Iran truce to reopen the critical Strait of Hormuz. The diplomatic breakthrough caused international Brent crude prices to tumble, directly easing inflation pressures for energy-dependent economies like India. Consequently, major Indian indices experienced a massive, broad-based rally, while Wall Street celebrated both the peace talks and SpaceX’s historic $2.1 trillion public debut. However, the immediate trading euphoria stands in sharp contrast to a sobering long-term economic outlook from the World Bank, which cut global growth forecasts due to lingering structural damage. Ultimately, the day's events highlight how quickly relieving subconscious geopolitical anxiety can unleash pent-up market capital, even amid underlying economic caution.",
-    "body": "<p>Welcome back to our daily financial chronicle. As a farsight writer mapping the intricate world of global finance, today's story is one of surprising geopolitical thaws, collective relief, and monumental market milestones. Let's dive into the logic behind the numbers and explore the profound shifts shaping our economic reality, starting right here at home.</p>", <p>India: A Breath of Fresh Air and Roaring Bulls </p> <p> The dark clouds of geopolitical uncertainty that have hovered over the global supply chains finally seem to be parting, bringing a vibrant ray of sunshine to Dalal Street. The primary protagonist behind yesterday's massive market surge was a much-awaited diplomatic breakthrough. According to market observers at Livelong Wealth and major media outlets like The Hindu, a sudden shift in the Middle East—specifically a draft truce deal between the United States and Iran—acted as a powerful catalyst for the economy. This draft memorandum of understanding aims to reopen the critical Strait of Hormuz, an essential artery for global oil flow, effectively easing fears of a wider conflict.</p> <p>When this news hit, the markets reacted with absolute enthusiasm. As per the official National Stock Exchange (NSE) data, the 50-share Nifty index shot up by a whopping 461 points (a 1.99% leap), closing proudly at 23,622.90. The 30-share BSE Sensex wasn't far behind, jumping an impressive 1,695 points to settle at 75,527.95. Financial experts from Lemonn Blog analyzed the trend and noted that this was a wonderfully broad-based rally. It wasn't just a few big companies pulling the weight; about 443 out of 500 stocks in the broader Nifty-500 index ended the day in the green, showcasing widespread investor confidence.</p>
-    "createdAt": "13/06/2026 09:00 AM"  }
+    "body": "<p>Welcome back to our daily financial chronicle. As a farsight writer mapping the intricate world of global finance, today's story is one of surprising geopolitical thaws, collective relief, and monumental market milestones. Let's dive into the logic behind the numbers and explore the profound shifts shaping our economic reality, starting right here at home.</p><p>India: A Breath of Fresh Air and Roaring Bulls</p><p>The dark clouds of geopolitical uncertainty that have hovered over global supply chains finally seem to be parting, bringing a vibrant ray of sunshine to Dalal Street. The primary protagonist behind yesterday's massive market surge was a much-awaited diplomatic breakthrough. According to market observers at Livelong Wealth and major media outlets like The Hindu, a sudden shift in the Middle East, specifically a draft truce deal between the United States and Iran, acted as a powerful catalyst for the economy. This draft memorandum of understanding aims to reopen the critical Strait of Hormuz, an essential artery for global oil flow, effectively easing fears of a wider conflict.</p><p>When this news hit, the markets reacted with absolute enthusiasm. As per official National Stock Exchange (NSE) data, the 50-share Nifty index shot up by 461 points (a 1.99% leap), closing at 23,622.90. The 30-share BSE Sensex followed closely, jumping 1,695 points to settle at 75,527.95. Financial experts noted that this was a broad-based rally. It wasn't just a few large companies driving the gains; about 443 out of 500 stocks in the broader Nifty-500 index ended the day in the green, showcasing widespread investor confidence.</p>",
+    "createdAt": "13/06/2026 09:00 AM"
+  }
 ]
-
-
