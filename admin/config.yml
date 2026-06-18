@@ -20,6 +20,7 @@ collections:
             fields:
               - { name: "id", label: "Story ID (Must be unique)", widget: "number" }
               - { name: "title", label: "Title", widget: "string" }
+              - { name: "category", label: "Section / Country", widget: "select", options: ["India", "World", "Markets", "US", "UK", "Opinion"], default: "World" }
               - { name: "authorId", label: "Author ID", widget: "string", default: "k_abhishektiwari" }
               - { name: "about", label: "About / Excerpt", widget: "text", required: false }
               - { name: "body", label: "Story Body", widget: "markdown" }
