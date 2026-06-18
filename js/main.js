@@ -10,7 +10,8 @@ function calculateReadingTime(html) {
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  const stories = await loadJSON("data/stories.json");
+  const storiesData = await loadJSON("data/stories.json");
+const stories = Array.isArray(storiesData) ? storiesData : storiesData.stories;
   const authors = await loadJSON("data/authors.json");
 
   /* INDEX */
