@@ -1,3 +1,12 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden; /* Mathematically prevents any left/right sliding */
+  width: 100%;
+}
+
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
@@ -79,14 +88,21 @@ header {
 }
 
 .site-title {
-  justify-self: center; /* Locks the text to the absolute mathematical center */
-  font-size: 34px;
+  justify-self: center;
+  font-size: 22px; /* Perfectly sized for mobile screens */
   font-weight: 750;
   color: #121212;
   text-decoration: none;
-  font-family: Georgia, serif; 
+  font-family: Georgia, serif;
   letter-spacing: -0.5px;
-  white-space: nowrap; /* Prevents the title from breaking onto two lines */
+  white-space: nowrap;
+}
+
+/* Restores the large, premium size for tablets and laptops */
+@media (min-width: 768px) {
+  .site-title {
+    font-size: 34px; 
+  }
 }
 
 .site-title:hover {
