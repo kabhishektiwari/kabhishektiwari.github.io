@@ -26,16 +26,29 @@
   color: #121212;
 }
 
-/* Dynamic Section Title */
+/* Dynamic Section/Tag Indicator */
 .section-title {
-  font-family: Georgia, serif;
-  font-size: 42px;
-  font-weight: 400;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
   color: #121212;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
   margin: 0 auto 32px auto;
   max-width: 1400px;
-  border-bottom: 1px solid #dcd7ce;
-  padding-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between the dot and the text */
+}
+
+/* Adds a subtle editorial red dot to signify an active filter */
+.section-title::before {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 6px;
+  background-color: #991b1b;
+  border-radius: 50%;
 }
 
 /* Clickable Editorial Tags */
