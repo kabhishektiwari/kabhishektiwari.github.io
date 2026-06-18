@@ -34,30 +34,9 @@ header {
 /* ---------- SITE HEADER ---------- */
 
 .site-header {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  padding: 12px 0 18px;
-  border-bottom: 1px #1e293b;
-  position: relative;
-}
-
-/* second line */
-.site-header::before,
-.site-header::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  border-bottom: 1px solid #1e293b;
-}
-
-.site-header::before {
-  bottom: 3px;
-}
-
-.site-header::after {
-  bottom: 0;
+  width: 100%;
+  padding: 18px 0;
+  /* Removes the old borders and relies on the nav tabs for separation */
 }
 
 /* constrain header width on large screens */
@@ -80,38 +59,26 @@ header {
 
 .header-inner {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  /* The Logic: Left Column (1 fraction), Center Column (auto width), Right Column (1 fraction) */
+  grid-template-columns: 1fr auto 1fr; 
   align-items: center;
-
   width: 100%;
-  padding: 0 16px;
 }
-
-@media (min-width: 1024px) {
-  .header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-}
-
 
 .logo-link {
+  justify-self: start; /* Pins the logo to the far left boundary */
   display: flex;
   align-items: center;
 }
 
-.site-logo {
-  height: 52px;
-  width: auto;
-}
-
 .site-title {
-  justify-self: center;
-  font-size: 32px;
+  justify-self: center; /* Locks the text to the absolute mathematical center */
+  font-size: 34px;
   font-weight: 750;
   color: #121212;
   text-decoration: none;
+  font-family: Georgia, serif; /* Syncs the header typography with your story headlines */
+  letter-spacing: -0.5px;
 }
 
 .site-title:hover {
