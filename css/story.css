@@ -25,3 +25,26 @@ article {
   object-fit: cover;
   border: 1px solid #1e293b;
 }
+
+/* Premium Editorial Styling for the About Section (Standfirst) */
+#aboutSection {
+  margin: 32px 0;
+}
+
+#aboutSection hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(148, 163, 184, 0.5), rgba(0, 0, 0, 0)); 
+  margin: 0;
+}
+
+#aboutText {
+  font-size: 1.15em;
+  color: #64748b; /* A sophisticated, faded slate gray */
+  font-style: italic; /* Classic editorial distinction */
+  font-weight: 400;
+  line-height: 1.8;
+  padding: 28px 0;
+  margin: 0;
+  text-align: center; /* Centers the excerpt for visual balance */
+}
