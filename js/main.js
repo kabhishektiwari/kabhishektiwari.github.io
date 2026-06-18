@@ -14,60 +14,82 @@ document.addEventListener("DOMContentLoaded", async () => {
 const stories = Array.isArray(storiesData) ? storiesData : storiesData.stories;
   const authors = await loadJSON("data/authors.json");
 
- /* INDEX */
+/* INDEX */
   const storiesEl = document.getElementById("stories");
   const navEl = document.getElementById("categoryNav");
+  const titleEl = document.getElementById("sectionTitle");
 
-  if (storiesEl && navEl) {
-    // Determine Categories
-    const categories = ["All", "India", "World", "Markets", "US", "UK"];
-    let currentCategory = "All";
+  if (storiesEl && navEl && titleEl) {
+    // World is now the aggregate, followed by specific countries
+    const tabs = ["World", "India", "Markets", "US", "UK"];
 
-    // Function to render the grid based on selection
-    function renderGrid(filterCat) {
+    // Function to render the grid based on Filter Type and Value
+    function renderGrid(filterValue, filterType = "tab") {
       storiesEl.innerHTML = "";
       
-      const filteredStories = filterCat === "All" 
-        ? stories 
-        : stories.filter(s => (s.category || "World") === filterCat);
+      // Update the large section title
+      titleEl.textContent = filterValue;
+
+      // Logic: If "World" is selected, show all. Otherwise, filter by category or tag.
+      let filteredStories = stories;
+      
+      if (filterType === "tab" && filterValue !== "World") {
+        filteredStories = stories.filter(s => s.category === filterValue);
+      } else if (filterType === "tag") {
+        filteredStories = stories.filter(s => s.tag === filterValue);
+      }
 
       filteredStories.forEach(s => {
         const author = authors[s.authorId];
         const div = document.createElement("div");
         div.className = "story-card";
+        
+        // Clicking the card goes to the story
         div.onclick = () => location.href = `story.html?id=${s.id}`;
         
         const readTime = calculateReadingTime(s.body);
-        const displayCategory = s.category || "World"; // Fallback for older posts
-        const shortDate = s.createdAt.split(' ')[0]; // Strips the time off the date
+        const displayTag = s.tag || "News"; 
+        const shortDate = s.createdAt.split(' ')[0]; 
 
         div.innerHTML = `
-          <div class="story-category">${displayCategory}</div>
+          <div><span class="story-tag">${displayTag}</span></div>
           <div class="story-title">${s.title}</div>
           <div class="story-meta">${author.name} • ${shortDate} • ⏱ ${readTime} min read</div>
         `;
+        
+        // INTERCEPT LOGIC: Make the tag clickable without triggering the card click
+        const tagElement = div.querySelector('.story-tag');
+        tagElement.onclick = (event) => {
+          event.stopPropagation(); // Stops the click from bubbling up to the card
+          
+          // Remove active state from top tabs since we are in a custom Tag view
+          document.querySelectorAll(".category-nav button").forEach(b => b.classList.remove("active"));
+          
+          // Render the grid filtered exclusively by this tag
+          renderGrid(displayTag, "tag");
+        };
+
         storiesEl.appendChild(div);
       });
     }
 
-    // Build the Navigation Buttons
-    categories.forEach(cat => {
+    // Build the Top Navigation Buttons
+    tabs.forEach(tab => {
       const btn = document.createElement("button");
-      btn.textContent = cat;
-      if (cat === "All") btn.className = "active";
+      btn.textContent = tab;
+      if (tab === "World") btn.className = "active"; // World is default
       
       btn.onclick = () => {
         document.querySelectorAll(".category-nav button").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        renderGrid(cat);
+        renderGrid(tab, "tab");
       };
       navEl.appendChild(btn);
     });
 
-    // Initial render
-    renderGrid("All");
+    // Initial render loads the aggregate "World" view
+    renderGrid("World", "tab");
   }
-
   /* STORY */
   const titleEl = document.getElementById("title");
   if (titleEl) {
