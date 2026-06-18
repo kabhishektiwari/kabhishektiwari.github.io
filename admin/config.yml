@@ -1,0 +1,26 @@
+backend:
+  name: github
+  repo: kabhishektiwari/kabhishektiwari.github.io
+  branch: main
+
+media_folder: "images"
+public_folder: "../images"
+
+collections:
+  - name: "database"
+    label: "Website Content"
+    files:
+      - file: "data/stories.json"
+        name: "stories_db"
+        label: "Stories Database"
+        fields:
+          - name: "stories"
+            label: "All Stories"
+            widget: "list"
+            fields:
+              - { name: "id", label: "Story ID (Must be unique)", widget: "number" }
+              - { name: "title", label: "Title", widget: "string" }
+              - { name: "authorId", label: "Author ID", widget: "string", default: "k_abhishektiwari" }
+              - { name: "about", label: "About / Excerpt", widget: "text", required: false }
+              - { name: "body", label: "Story Body", widget: "markdown" }
+              - { name: "createdAt", label: "Publish Date", widget: "string", hint: "Format: DD/MM/YYYY HH:MM AM/PM" }
