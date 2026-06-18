@@ -88,13 +88,13 @@ margin: 10px auto 20px auto;
 
 /* Premium Card Design */
 .story-card {
-  background: #ffffff; /* Sharp white against the cream body */
+  background: #ffffff;
   border: 1px solid #dcd7ce;
   padding: 24px;
-  cursor: pointer;
-  transition: box-shadow 0.2s, transform 0.2s;
   display: flex;
   flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+  /* Removed cursor: pointer so the whole card isn't a button anymore */
 }
 
 .story-card:hover {
@@ -104,25 +104,57 @@ margin: 10px auto 20px auto;
 
 .story-category {
   font-size: 12px;
-  color: #991b1b; /* Editorial dark red */
+  color: #991b1b;
   text-transform: uppercase;
   font-weight: 700;
   margin-bottom: 10px;
   letter-spacing: 0.5px;
 }
 
+/* Updated Title: Now acts as the primary clickable link */
 .story-title {
   font-size: 26px;
-  font-family: Georgia, serif; /* Distinct newspaper typography */
+  font-family: Georgia, serif;
   font-weight: bold;
   line-height: 1.25;
-  margin-bottom: 24px;
+  margin-bottom: 12px; /* Reduced from 24px to make room for the excerpt */
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
+.story-title:hover {
+  color: #38bdf8; /* The hover color for the heading */
+}
+
+/* The Faded, 3-Line Excerpt */
+.story-excerpt {
+  font-size: 15px;
+  color: #64748b; /* Faded editorial text */
+  line-height: 1.6;
+  margin-bottom: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Mathematically limits the text to exactly 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds the "..." at the end if it's too long */
+}
+
+/* Updated Meta Section with Clickable Links */
 .story-meta {
-  margin-top: auto; /* Pushes meta to the bottom */
+  margin-top: auto; 
   font-size: 13px;
   color: #64748b;
   border-top: 1px solid #f1f5f9;
   padding-top: 12px;
+}
+
+.meta-link {
+  cursor: pointer;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+
+.meta-link:hover {
+  color: #121212;
+  text-decoration: underline;
 }
