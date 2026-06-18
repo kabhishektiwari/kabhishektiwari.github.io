@@ -26,6 +26,35 @@
   color: #121212;
 }
 
+/* Dynamic Section Title */
+.section-title {
+  font-family: Georgia, serif;
+  font-size: 42px;
+  font-weight: 400;
+  color: #121212;
+  margin: 0 auto 32px auto;
+  max-width: 1400px;
+  border-bottom: 1px solid #dcd7ce;
+  padding-bottom: 16px;
+}
+
+/* Clickable Editorial Tags */
+.story-tag {
+  font-size: 13px;
+  color: #991b1b;
+  text-transform: capitalize;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: inline-block;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.story-tag:hover {
+  color: #121212;
+  text-decoration: underline;
+}
+
 /* Stories Grid System */
 #stories {
   display: grid;
