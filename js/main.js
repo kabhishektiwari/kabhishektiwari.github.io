@@ -14,12 +14,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 const stories = Array.isArray(storiesData) ? storiesData : storiesData.stories;
   const authors = await loadJSON("data/authors.json");
 
+  
 /* INDEX */
   const storiesEl = document.getElementById("stories");
   const navEl = document.getElementById("categoryNav");
-  const titleEl = document.getElementById("sectionTitle");
+  const sectionTitleEl = document.getElementById("sectionTitle"); // Renamed to prevent script crash
 
-  if (storiesEl && navEl && titleEl) {
+  if (storiesEl && navEl && sectionTitleEl) {
     // World is now the aggregate, followed by specific countries
     const tabs = ["World", "India", "Markets", "US", "UK"];
 
@@ -28,7 +29,7 @@ const stories = Array.isArray(storiesData) ? storiesData : storiesData.stories;
       storiesEl.innerHTML = "";
       
       // Update the large section title
-      titleEl.textContent = filterValue;
+      sectionTitleEl.textContent = filterValue;
 
       // Logic: If "World" is selected, show all. Otherwise, filter by category or tag.
       let filteredStories = stories;
@@ -49,7 +50,9 @@ const stories = Array.isArray(storiesData) ? storiesData : storiesData.stories;
         
         const readTime = calculateReadingTime(s.body);
         const displayTag = s.tag || "News"; 
-        const shortDate = s.createdAt.split(' ')[0]; 
+        
+        // Defensive check: formats the date safely even if older stories have weird data
+        const shortDate = s.createdAt ? s.createdAt.split(' ')[0] : "Recent";
 
         div.innerHTML = `
           <div><span class="story-tag">${displayTag}</span></div>
@@ -90,6 +93,8 @@ const stories = Array.isArray(storiesData) ? storiesData : storiesData.stories;
     // Initial render loads the aggregate "World" view
     renderGrid("World", "tab");
   }
+
+  
   /* STORY */
   const titleEl = document.getElementById("title");
   if (titleEl) {
