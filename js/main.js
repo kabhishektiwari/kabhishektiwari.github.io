@@ -18,26 +18,38 @@ const stories = Array.isArray(storiesData) ? storiesData : storiesData.stories;
 /* INDEX */
   const storiesEl = document.getElementById("stories");
   const navEl = document.getElementById("categoryNav");
-  const sectionTitleEl = document.getElementById("sectionTitle"); // Renamed to prevent script crash
+  const sectionTitleEl = document.getElementById("sectionTitle");
 
   if (storiesEl && navEl && sectionTitleEl) {
-    // World is now the aggregate, followed by specific countries
-const tabs = ["World", "India", "Markets", "US", "Europe"];
+    const tabs = ["World", "India", "Markets", "US", "Europe"];
 
-    // Function to render the grid based on Filter Type and Value
-    function renderGrid(filterValue, filterType = "tab") {
+    // filterId is added to specifically track author IDs mathematically
+    function renderGrid(filterValue, filterType = "tab", filterId = null) {
       storiesEl.innerHTML = "";
       
-      // Update the large section title
-      sectionTitleEl.textContent = filterValue;
+      // Dynamically update the large section title so the user knows what they are filtering by
+      if (filterType === "author") {
+        sectionTitleEl.textContent = `Author: ${filterValue}`;
+      } else if (filterType === "date") {
+        sectionTitleEl.textContent = `Date: ${filterValue}`;
+      } else {
+        sectionTitleEl.textContent = filterValue;
+      }
 
-      // Logic: If "World" is selected, show all. Otherwise, filter by category or tag.
       let filteredStories = stories;
       
+      // Multi-layered filtering logic
       if (filterType === "tab" && filterValue !== "World") {
         filteredStories = stories.filter(s => s.category === filterValue);
       } else if (filterType === "tag") {
         filteredStories = stories.filter(s => s.tag === filterValue);
+      } else if (filterType === "author") {
+        filteredStories = stories.filter(s => s.authorId === filterId);
+      } else if (filterType === "date") {
+        filteredStories = stories.filter(s => {
+          const storyDate = s.createdAt ? s.createdAt.split(' ')[0] : "Recent";
+          return storyDate === filterValue;
+        });
       }
 
       filteredStories.forEach(s => {
@@ -45,31 +57,46 @@ const tabs = ["World", "India", "Markets", "US", "Europe"];
         const div = document.createElement("div");
         div.className = "story-card";
         
-        // Clicking the card goes to the story
-        div.onclick = () => location.href = `story.html?id=${s.id}`;
-        
         const readTime = calculateReadingTime(s.body);
         const displayTag = s.tag || "News"; 
-        
-        // Defensive check: formats the date safely even if older stories have weird data
         const shortDate = s.createdAt ? s.createdAt.split(' ')[0] : "Recent";
+        
+        // Only generate the excerpt HTML if the 'about' section actually contains text
+        const excerptHTML = s.about ? `<div class="story-excerpt">${s.about}</div>` : '';
 
+        // The new HTML structure isolates the links
         div.innerHTML = `
           <div><span class="story-tag">${displayTag}</span></div>
           <div class="story-title">${s.title}</div>
-          <div class="story-meta">${author.name} • ${shortDate} • ⏱ ${readTime} min read</div>
+          ${excerptHTML}
+          <div class="story-meta">
+            <span class="meta-link meta-author">${author.name}</span> • 
+            <span class="meta-link meta-date">${shortDate}</span> • 
+            ⏱ ${readTime} min read
+          </div>
         `;
         
-        // INTERCEPT LOGIC: Make the tag clickable without triggering the card click
-        const tagElement = div.querySelector('.story-tag');
-        tagElement.onclick = (event) => {
-          event.stopPropagation(); // Stops the click from bubbling up to the card
-          
-          // Remove active state from top tabs since we are in a custom Tag view
+        // --- ISOLATED CLICK EVENTS ---
+
+        // 1. Click Title -> Opens the Story
+        div.querySelector('.story-title').onclick = () => location.href = `story.html?id=${s.id}`;
+
+        // 2. Click Tag -> Filters by Tag
+        div.querySelector('.story-tag').onclick = () => {
           document.querySelectorAll(".category-nav button").forEach(b => b.classList.remove("active"));
-          
-          // Render the grid filtered exclusively by this tag
           renderGrid(displayTag, "tag");
+        };
+
+        // 3. Click Author -> Filters by Author Name & ID
+        div.querySelector('.meta-author').onclick = () => {
+          document.querySelectorAll(".category-nav button").forEach(b => b.classList.remove("active"));
+          renderGrid(author.name, "author", s.authorId);
+        };
+
+        // 4. Click Date -> Filters by Specific Date
+        div.querySelector('.meta-date').onclick = () => {
+          document.querySelectorAll(".category-nav button").forEach(b => b.classList.remove("active"));
+          renderGrid(shortDate, "date");
         };
 
         storiesEl.appendChild(div);
@@ -80,7 +107,7 @@ const tabs = ["World", "India", "Markets", "US", "Europe"];
     tabs.forEach(tab => {
       const btn = document.createElement("button");
       btn.textContent = tab;
-      if (tab === "World") btn.className = "active"; // World is default
+      if (tab === "World") btn.className = "active";
       
       btn.onclick = () => {
         document.querySelectorAll(".category-nav button").forEach(b => b.classList.remove("active"));
@@ -90,10 +117,8 @@ const tabs = ["World", "India", "Markets", "US", "Europe"];
       navEl.appendChild(btn);
     });
 
-    // Initial render loads the aggregate "World" view
     renderGrid("World", "tab");
   }
-
   
   /* STORY */
   const titleEl = document.getElementById("title");
