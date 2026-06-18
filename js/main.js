@@ -22,7 +22,7 @@ const stories = Array.isArray(storiesData) ? storiesData : storiesData.stories;
 
   if (storiesEl && navEl && sectionTitleEl) {
     // World is now the aggregate, followed by specific countries
-    const tabs = ["World", "India", "Markets", "US", "UK"];
+const tabs = ["World", "India", "Markets", "US", "Europe"];
 
     // Function to render the grid based on Filter Type and Value
     function renderGrid(filterValue, filterType = "tab") {
