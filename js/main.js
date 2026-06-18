@@ -59,7 +59,7 @@ const stories = Array.isArray(storiesData) ? storiesData : storiesData.stories;
       aboutSection.style.display = "none";
     }
 
-    content.innerHTML = story.body;
+   content.innerHTML = marked.parse(story.body);
   }
 
   /* AUTHOR */
