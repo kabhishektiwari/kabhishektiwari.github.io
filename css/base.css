@@ -4,6 +4,7 @@ body {
   background: #fdfaf6; /* Premium editorial cream/champagne */
   color: #121212;
 }
+
 /* ------for all pages width margin-----*/
 .page {
   width: 100%;
@@ -36,7 +37,6 @@ header {
 .site-header {
   width: 100%;
   padding: 18px 0;
-  /* Removes the old borders and relies on the nav tabs for separation */
 }
 
 /* constrain header width on large screens */
@@ -71,14 +71,22 @@ header {
   align-items: center;
 }
 
+/* --- THE FIX: Constraining the image size --- */
+.site-logo {
+  height: 48px; 
+  width: auto;
+  border-radius: 50%; /* Keeps the edges perfectly circular */
+}
+
 .site-title {
   justify-self: center; /* Locks the text to the absolute mathematical center */
   font-size: 34px;
   font-weight: 750;
   color: #121212;
   text-decoration: none;
-  font-family: Georgia, serif; /* Syncs the header typography with your story headlines */
+  font-family: Georgia, serif; 
   letter-spacing: -0.5px;
+  white-space: nowrap; /* Prevents the title from breaking onto two lines */
 }
 
 .site-title:hover {
@@ -94,4 +102,3 @@ a {
   display: block;
   margin: 20px;
 }
-
