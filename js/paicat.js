@@ -1,3 +1,57 @@
+// --- Core Security: Session & Inactivity Manager ---
+function initializeSessionManager() {
+    // 1. TAB CLOSE DETECTION
+    // sessionStorage is automatically destroyed by the browser when a tab closes. 
+    if (!sessionStorage.getItem('paicat_session_active')) {
+        // Wipe Developer Status
+        localStorage.removeItem('paicat_user_role');
+        localStorage.removeItem('paicat_user_display_name');
+        
+        // Wipe Chat History using your exact key
+        localStorage.removeItem('gemini_chat_history'); 
+        
+        // Set the flag so refreshing the page doesn't log you out
+        sessionStorage.setItem('paicat_session_active', 'true');
+    }
+
+    // 2. INACTIVITY TIMEOUT (10 Minutes)
+    let inactivityTimer;
+    const IDLE_LIMIT_MS = 10 * 60 * 1000; // 10 minutes in milliseconds
+
+    function enforceLogout() {
+        // Wipe Developer Status
+        localStorage.removeItem('paicat_user_role');
+        localStorage.removeItem('paicat_user_display_name');
+        
+        // Wipe Chat History using your exact key
+        localStorage.removeItem('gemini_chat_history'); 
+        
+        // Wipe the array in current memory if applicable
+        if (typeof chatHistory !== 'undefined') {
+            chatHistory = [];
+        }
+        
+        // Force page refresh to reset the UI to Guest mode
+        window.location.reload();
+    }
+
+    function resetActivityTimer() {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(enforceLogout, IDLE_LIMIT_MS);
+    }
+
+    // Monitor the document for physical interaction to prove the user is active
+    ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(eventType => {
+        document.addEventListener(eventType, resetActivityTimer, { passive: true });
+    });
+
+    // Start the 10-minute countdown immediately on load
+    resetActivityTimer();
+}
+
+// Execute the security check immediately
+initializeSessionManager();
+
 document.addEventListener("DOMContentLoaded", () => {
 
     // Determine identity state securely from local memory cache
