@@ -48,23 +48,23 @@ body[data-theme="dark"] {
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
+html, body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-color);
     margin: 0;
     padding: 0;
     display: flex;
     
-  /* 1. THE NATIVE APP LOCK */
-    height: var(--viewport-height, 100dvh);
+    /* 1. THE NATIVE APP VIEWPORT LOCK */
+    height: 100dvh; 
     width: 100vw;
-    position: fixed; /* This prevents the browser from panning the screen upward */
+    position: fixed; 
     top: 0;
     left: 0;
     
-    /* 2. DISABLE PAGE SCROLLING */
-    /* This turns off pull-to-refresh, forcing only the chat area to scroll */
+    /* 2. CHROME OVERSCROLL NEUTRALIZER */
     overflow: hidden; 
+    overscroll-behavior: none; /* Physically disables Chrome's elastic bounce and pan */
     
     transition: background-color 1s ease, background-image 1s ease, color 0.3s ease;
 }
