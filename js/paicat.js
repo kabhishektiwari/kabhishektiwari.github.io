@@ -1,3 +1,16 @@
+// --- Early Theme Resolver ---
+function applyActiveTheme() {
+    const savedTheme = localStorage.getItem('paicat_theme') || 'system';
+    let resolvedTheme = savedTheme;
+    
+    if (savedTheme === 'system') {
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        resolvedTheme = systemPrefersDark ? 'dark' : 'light';
+    }
+    document.body.setAttribute('data-theme', resolvedTheme);
+}
+applyActiveTheme();
+
 // --- Core Security: Session & Inactivity Manager ---
 function initializeSessionManager() {
     // 1. TAB CLOSE DETECTION
@@ -129,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const mediaPreviewName = document.getElementById('media-preview-name');
     const removeMediaBtn = document.getElementById('remove-media-btn');
 
-    // Context Arrays
+  // Context Arrays
     let chatHistory = []; 
     let currentMedia = null;
 
@@ -138,6 +151,26 @@ document.addEventListener("DOMContentLoaded", () => {
     loadHistory();
     initializeIdentityGate(); 
 
+    // --- Theme Controller & Settings Binder ---
+    function syncThemeUI() {
+        const savedTheme = localStorage.getItem('paicat_theme') || 'system';
+        const activeRadio = document.querySelector(`input[name="paicat-theme-select"][value="${savedTheme}"]`);
+        if (activeRadio) {
+            activeRadio.checked = true;
+        }
+
+        // Bind automatically refreshing change event listeners to the switches
+        document.querySelectorAll('input[name="paicat-theme-select"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                localStorage.setItem('paicat_theme', e.target.value);
+                // Automatically reload to instantly clean memory, shift variables, and render UI changes smoothly
+                window.location.reload();
+            });
+        });
+    }
+    
+    // Execute inside your DOMContentLoaded load sequence
+    syncThemeUI();
 
     if (maxTokensInput) {
         maxTokensInput.addEventListener('input', () => {
