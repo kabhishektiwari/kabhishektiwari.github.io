@@ -52,13 +52,33 @@
     <!-- System Parameter Modal -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
+            <!-- Modal Header (Must be first) -->
             <span class="close-btn">&times;</span>
             <h2>System Parameters</h2>
-            
 
+            <!-- Theme Control Segmented Selection Switch Setup -->
+            <label style="margin-top: 12px; display: block;">Theme</label>
+            <div class="theme-switch-container">
+                <label class="theme-option">
+                    <input type="radio" name="paicat-theme-select" value="light">
+                    <span>Light</span>
+                </label>
+                <label class="theme-option">
+                    <input type="radio" name="paicat-theme-select" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label class="theme-option">
+                    <input type="radio" name="paicat-theme-select" value="system">
+                    <span>System</span>
+                </label>
+            </div>
+            <hr style="border: 0; border-top: 1px solid var(--modal-border); margin: 12px 0;">
+            
+            <!-- Other Parameters -->
             <label>Creator Password Tool:</label>
             <input type="password" id="new-password-input" placeholder="Type your new custom password here">
             <button id="generate-hash-btn" type="button" style="margin-top: 8px; padding: 6px; background: #34495e; border: none; color: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">Generate Secure Hash</button>
+            
             <div id="hash-output-container" style="display:none; margin-top: 8px;">
                 <small style="color: #27ae60; font-weight: 600;">Copy the secure hash below and update your script.js file:</small>
                 <div class="copy-container">
