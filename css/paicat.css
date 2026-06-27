@@ -55,15 +55,16 @@ body {
     padding: 0;
     display: flex;
     
-    /* 1. THE MOBILE KEYBOARD FIX: Dynamic Viewport Height */
+    /* 1. THE NATIVE APP LOCK */
     height: 100dvh; 
-    
     width: 100vw;
-    color: var(--text-color);
+    position: fixed; /* This prevents the browser from panning the screen upward */
+    top: 0;
+    left: 0;
     
-    /* 2. ENABLE PULL-TO-REFRESH: Remove vertical overflow block */
-    overflow-x: hidden; 
-    overflow-y: auto;
+    /* 2. DISABLE PAGE SCROLLING */
+    /* This turns off pull-to-refresh, forcing only the chat area to scroll */
+    overflow: hidden; 
     
     transition: background-color 1s ease, background-image 1s ease, color 0.3s ease;
 }
