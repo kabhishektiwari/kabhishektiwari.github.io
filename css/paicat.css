@@ -278,4 +278,31 @@ body[data-theme="dark"] .user-message {
 body[data-theme="dark"] .ai-message {
     background-color: transparent;
     border-color: transparent;
+} 
+
+/* --- ULTIMATE DARK MODE TEXT VISIBILITY FIX --- */
+
+/* 1. Force Paicat's Name and the Settings button to be bright */
+body[data-theme="dark"] h1,
+body[data-theme="dark"] #settings-btn {
+    color: #e8eaed !important;
+}
+
+/* 2. Force AI Responses to be bright off-white */
+body[data-theme="dark"] .ai-message,
+body[data-theme="dark"] .message-content {
+    color: #e8eaed !important;
+}
+
+/* 3. Force the input box text and attachment button to be bright */
+body[data-theme="dark"] #user-input,
+body[data-theme="dark"] #attach-btn,
+body[data-theme="dark"] .inline-select {
+    color: #e8eaed !important;
+}
+
+/* 4. Fix Markdown Code colors so they pop in dark mode */
+body[data-theme="dark"] .ai-message code {
+    color: #ffb7b2 !important; 
+    background-color: var(--code-bg) !important;
 }
