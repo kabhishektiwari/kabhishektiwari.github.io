@@ -72,6 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const apiKeyInput = document.getElementById('api-key');
     const maxTokensInput = document.getElementById('max-tokens');
     const inlineModelSelect = document.getElementById('inline-model-select');
+    
+    const devModeBtn = document.getElementById('dev-mode-btn');
+    const devModeText = document.getElementById('dev-mode-text');
+    const devModeIcon = document.getElementById('dev-mode-icon');
 
     // Password Tool Custom Mapping 
     const newPasswordInput = document.getElementById('new-password-input');
@@ -214,42 +218,28 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- Hardened Identity Verification Logic ---
+  // --- Hardened Identity Verification Logic ---
     async function initializeIdentityGate() {
+        // 1. Default to Guest User silently if no role is found (No more aggressive popups)
         if (!localStorage.getItem('paicat_user_role')) {
-            const setupChoice = confirm("Initialize PAICAT Core Configuration:\n\nAre you the Creator (Abhishek Tiwari)? Click 'OK' to authenticate. Click 'Cancel' to enter as a Guest User.");
-            
-            if (setupChoice) {
-                const passcode = prompt("Enter your private Creator Key / Passcode to authenticate:");
-                if (passcode) {
-                    const inputHash = await sha256(passcode.trim().toLowerCase());
-                    const targetHash = "88a0aeb3a05a25a3afb676a02b9bd977cfacd57ec6a72d58e285666272345b65";
-                    
-                    if (inputHash === targetHash) {
-                        localStorage.setItem('paicat_user_role', 'creator');
-                        localStorage.setItem('paicat_user_display_name', 'Abhishek Tiwari');
-                        alert("Identity Cryptographically Authenticated. Welcome back, Tiwari Ji.");
-                    } else {
-                        alert("Authentication Failure. Cryptographic signatures do not match. Initiating secure Guest Session.");
-                        localStorage.setItem('paicat_user_role', 'guest');
-                        localStorage.setItem('paicat_user_display_name', 'Guest User');
-                    }
-                } else {
-                    localStorage.setItem('paicat_user_role', 'guest');
-                    localStorage.setItem('paicat_user_display_name', 'Guest User');
-                }
-            } else {
-                localStorage.setItem('paicat_user_role', 'guest');
-                localStorage.setItem('paicat_user_display_name', 'Guest User');
-            }
-            window.location.reload(); 
+            localStorage.setItem('paicat_user_role', 'guest');
+            localStorage.setItem('paicat_user_display_name', 'Guest User');
         }
 
-        if (localStorage.getItem('paicat_user_role') === 'creator') {
-            const modelWrapper = document.getElementById('developer-model-wrapper');
-            if (modelWrapper) {
-                modelWrapper.style.display = 'block'; 
-            }
+        const isCreator = localStorage.getItem('paicat_user_role') === 'creator';
+        const modelWrapper = document.getElementById('developer-model-wrapper');
+
+        // 2. Adjust UI based on the current mode
+        if (isCreator) {
+            if (modelWrapper) modelWrapper.style.display = 'block';
+            if (devModeText) devModeText.innerText = 'Logout Developer Mode';
+            if (devModeIcon) devModeIcon.className = 'fas fa-sign-out-alt';
+            if (devModeBtn) devModeBtn.style.background = '#e74c3c'; // Turns red for logout
+        } else {
+            if (modelWrapper) modelWrapper.style.display = 'none';
+            if (devModeText) devModeText.innerText = 'Enter Developer Mode';
+            if (devModeIcon) devModeIcon.className = 'fas fa-user-shield';
+            if (devModeBtn) devModeBtn.style.background = '#2c3e50'; // Default dark blue
         }
     }
 
@@ -285,7 +275,39 @@ document.addEventListener("DOMContentLoaded", () => {
         if(mediaPreviewImg) mediaPreviewImg.src = '';
         if(mediaPreviewName) mediaPreviewName.innerText = '';
     }
+// --- Developer Mode Button Handler ---
+    if (devModeBtn) {
+        devModeBtn.addEventListener('click', async () => {
+            const currentRole = localStorage.getItem('paicat_user_role');
 
+            if (currentRole === 'creator') {
+                // Logout Process
+                if(confirm("Are you sure you want to exit Developer Mode?")) {
+                    localStorage.setItem('paicat_user_role', 'guest');
+                    localStorage.setItem('paicat_user_display_name', 'Guest User');
+                    window.location.reload(); // Reloads to reset system prompts and UI
+                }
+            } else {
+                // Login Process
+                const passcode = prompt("Enter your private Creator Key / Passcode to authenticate:");
+                if (passcode) {
+                    const inputHash = await sha256(passcode.trim().toLowerCase());
+                    const targetHash = "88a0aeb3a05a25a3afb676a02b9bd977cfacd57ec6a72d58e285666272345b65";
+                    
+                    if (inputHash === targetHash) {
+                        localStorage.setItem('paicat_user_role', 'creator');
+                        localStorage.setItem('paicat_user_display_name', 'Abhishek Tiwari');
+                        alert("Identity Cryptographically Authenticated. Welcome back, Tiwari Ji.");
+                        window.location.reload(); // Reloads to unlock developer prompts and UI
+                    } else {
+                        alert("Authentication Failure. Cryptographic signatures do not match.");
+                    }
+                }
+            }
+        });
+    }
+
+    
     // --- Dynamic Submit Button Logic ---
     if (userInput && submitBtn) {
         userInput.addEventListener('input', () => {
