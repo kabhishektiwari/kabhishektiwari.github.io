@@ -692,4 +692,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Trigger Listeners ---
     if(submitBtn) submitBtn.addEventListener('click', processQuery);
     if(userInput) userInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') processQuery(); });
+    // --- Aggressive Mobile Pan Overrider ---
+    if (userInput) {
+        const preventMobilePan = () => {
+            // Force the window to stay firmly locked at the absolute top coordinates
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                document.body.scrollTop = 0;
+            }, 40); // 40ms delay completely intercepts the mobile browser's native panning action
+        };
+
+        userInput.addEventListener('focus', preventMobilePan);
+        userInput.addEventListener('click', preventMobilePan);
+    }
 });
