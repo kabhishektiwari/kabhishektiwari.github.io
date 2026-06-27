@@ -26,23 +26,23 @@
 
 /* Hardened Gemini Dark Theme Variables */
 body[data-theme="dark"] {
-    --primary: #a8cdfc;
+    --primary: #8ab4f8;
     --primary-hover: #c2dcff;
     --bg-color: #131314;     /* Pure Gemini workspace tone */
     --chat-bg: #131314;
-    --user-msg: #1e1e1f;    /* Distinct user dark bubble */
+    --user-msg: #303134;    /* Lighter dark grey for better contrast */
     --ai-msg: #131314;
-    --text-color: #e3e3e3;
+    --text-color: #e8eaed;  /* Bright off-white for perfect reading clarity */
     --system-msg: #f28b82;
-    --input-bg: #1e1e1f;
-    --input-border: #3c4043;
-    --input-focus-border: #5f6368;
-    --input-text: #e3e3e3;
+    --input-bg: #1e1f20;    /* Distinct from the background */
+    --input-border: #444746;
+    --input-focus-border: #8ab4f8;
+    --input-text: #e8eaed;
     --pill-shadow: 0 4px 16px rgba(0,0,0,0.4);
     --pill-shadow-focus: 0 4px 20px rgba(0,0,0,0.6);
-    --modal-bg: #1e1e1f;
+    --modal-bg: #202124;
     --modal-border: #3c4043;
-    --modal-input-bg: #131314;
+    --modal-input-bg: #1e1f20;
     --code-bg: #2a2b2d;
 }
 
@@ -256,4 +256,26 @@ body[data-theme="dark"] .edit-update-btn { color: #131314; }
     .header { padding: 12px 16px; }
     .input-area { padding: 0 12px 20px 12px; }
     #chat-output { padding: 16px 12px; }
+}
+
+/* --- DARK MODE MOBILE STRUCTURAL FIXES --- */
+
+/* 1. Ensure container and header stay transparent so the gradient shines through */
+body[data-theme="dark"] .container,
+body[data-theme="dark"] .header,
+body[data-theme="dark"] .input-area {
+    background-color: transparent;
+}
+
+/* 2. Force high-contrast on User messages */
+body[data-theme="dark"] .user-message {
+    background-color: var(--user-msg);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+}
+
+/* 3. Ensure AI messages blend cleanly */
+body[data-theme="dark"] .ai-message {
+    background-color: transparent;
+    border-color: transparent;
 }
