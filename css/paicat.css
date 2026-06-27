@@ -55,8 +55,8 @@ body {
     padding: 0;
     display: flex;
     
-    /* 1. THE NATIVE APP LOCK */
-    height: 100dvh; 
+  /* 1. THE NATIVE APP LOCK */
+    height: var(--viewport-height, 100dvh);
     width: 100vw;
     position: fixed; /* This prevents the browser from panning the screen upward */
     top: 0;
