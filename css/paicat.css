@@ -113,8 +113,19 @@ h1 { font-size: 1.4rem; font-weight: 600; letter-spacing: -0.5px; }
 #settings-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #7f8c8d; transition: color 0.2s; }
 #settings-btn:hover { color: var(--primary); }
 
-.chat-area { flex: 1; display: flex; flex-direction: column; align-items: center; overflow: hidden; background-color: transparent; justify-content: flex-end; }
-.chat-area:has(#chat-output:empty) { justify-content: center; }
+.chat-area { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    overflow: hidden; 
+    background-color: transparent;
+    justify-content: flex-end; 
+    width: 100%;
+}
+.chat-area:has(#chat-output:empty) { 
+    justify-content: flex-end; 
+}
 
 #chat-output { width: 100%; max-width: 900px; flex: 1; padding: 24px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
 #chat-output:empty { display: none; }
