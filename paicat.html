@@ -35,11 +35,13 @@
 
                     <input type="text" id="user-input" placeholder="Ask Paicat" autocomplete="off">
 
-                    <select id="inline-model-select" class="inline-select" title="Select Reasoning Architecture">
-                        <option value="gemini-3.5-flash">3.5 Flash</option>
-                        <option value="gemini-2.5-flash" selected>2.5 Flash</option>
-                        <option value="gemini-3.1-flash-lite">3.1 Flash Lite</option>
-                    </select>
+                   <!-- Hidden by default. Only revealed to the developer -->
+<div id="developer-model-wrapper" style="display: none;">
+    <select id="inline-model-select" class="inline-select" title="Select Reasoning Architecture">
+        <option value="gemini-3.1-flash-lite" selected>3.1 Flash Lite</option>
+        <option value="gemini-2.5-flash">2.5 Flash</option>
+    </select>
+</div>
 
                     <button id="submit-btn" title="Send Message"><i class="fas fa-paper-plane"></i></button>
                 </div>
