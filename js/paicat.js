@@ -1,7 +1,10 @@
-    
-    // Initialize immediately on load
-    window.addEventListener('DOMContentLoaded', lockMobileViewport);
-}
+// ==========================================================================
+//   PAICAT CORE GLOBAL ARCHITECTURE & ENGINE DECLARATIONS
+// ==========================================================================
+
+// Global Scoped State Variables (Visible to Security Managers and System Blocks)
+let chatHistory = []; 
+let currentMedia = null;
 
 // --- Early Theme Resolver ---
 function applyActiveTheme() {
@@ -18,38 +21,21 @@ applyActiveTheme();
 
 // --- Core Security: Session & Inactivity Manager ---
 function initializeSessionManager() {
-    // 1. TAB CLOSE DETECTION
-    // sessionStorage is automatically destroyed by the browser when a tab closes. 
     if (!sessionStorage.getItem('paicat_session_active')) {
-        // Wipe Developer Status
         localStorage.removeItem('paicat_user_role');
         localStorage.removeItem('paicat_user_display_name');
-        
-        // Wipe Chat History using your exact key
         localStorage.removeItem('gemini_chat_history'); 
-        
-        // Set the flag so refreshing the page doesn't log you out
         sessionStorage.setItem('paicat_session_active', 'true');
     }
 
-    // 2. INACTIVITY TIMEOUT (10 Minutes)
     let inactivityTimer;
-    const IDLE_LIMIT_MS = 10 * 60 * 1000; // 10 minutes in milliseconds
+    const IDLE_LIMIT_MS = 10 * 60 * 1000; // 10 minutes
 
     function enforceLogout() {
-        // Wipe Developer Status
         localStorage.removeItem('paicat_user_role');
         localStorage.removeItem('paicat_user_display_name');
-        
-        // Wipe Chat History using your exact key
         localStorage.removeItem('gemini_chat_history'); 
-        
-        // Wipe the array in current memory if applicable
-        if (typeof chatHistory !== 'undefined') {
-            chatHistory = [];
-        }
-        
-        // Force page refresh to reset the UI to Guest mode
+        chatHistory = [];
         window.location.reload();
     }
 
@@ -58,19 +44,53 @@ function initializeSessionManager() {
         inactivityTimer = setTimeout(enforceLogout, IDLE_LIMIT_MS);
     }
 
-    // Monitor the document for physical interaction to prove the user is active
     ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(eventType => {
         document.addEventListener(eventType, resetActivityTimer, { passive: true });
     });
 
-    // Start the 10-minute countdown immediately on load
     resetActivityTimer();
 }
-
-// Execute the security check immediately
 initializeSessionManager();
 
+// ==========================================================================
+//   DOM CONTENT LOADED WORKSPACE APPLICATION
+// ==========================================================================
 document.addEventListener("DOMContentLoaded", () => {
+
+    // --- DOM Mapping ---
+    const chatOutput = document.getElementById('chat-output');
+    const userInput = document.getElementById('user-input');
+    const submitBtn = document.getElementById('submit-btn');
+    const typingIndicator = document.getElementById('typing-indicator');
+
+    const settingsBtn = document.getElementById('settings-btn');
+    const settingsModal = document.getElementById('settings-modal');
+    const closeBtn = document.querySelector('.close-btn');
+    const saveSettingsBtn = document.getElementById('save-settings-btn');
+    const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+    const apiKeyInput = document.getElementById('api-key');
+    const maxTokensInput = document.getElementById('max-tokens');
+    const inlineModelSelect = document.getElementById('inline-model-select');
+
+    // Password Tool Custom Mapping 
+    const newPasswordInput = document.getElementById('new-password-input');
+    const generateHashBtn = document.getElementById('generate-hash-btn');
+    const hashOutputContainer = document.getElementById('hash-output-container');
+    const generatedHashText = document.getElementById('generated-hash-text');
+    const copyHashBtn = document.getElementById('copy-hash-btn');
+
+    // Multimodal Mapping
+    const fileUpload = document.getElementById('file-upload');
+    const mediaPreviewContainer = document.getElementById('media-preview-container');
+    const mediaPreviewImg = document.getElementById('media-preview-img');
+    const mediaPreviewName = document.getElementById('media-preview-name');
+    const removeMediaBtn = document.getElementById('remove-media-btn');
+
+    // --- System Initialization Sequence (Must Execute Before System Prompts Compile) ---
+    loadSettings();
+    loadHistory();
+    initializeIdentityGate(); 
 
     // Determine identity state securely from local memory cache
     const isCreatorSession = localStorage.getItem('paicat_user_role') === 'creator';
@@ -117,45 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
   * For casual, informal talks (e.g., discussing your name, friendly chats): Strictly cap your response length to under 1000 tokens. Be concise. You may smoothly blend your female sentiments, warmth, informal slangs, and fitting emojis into the text structure.
 `;
 
-    // --- DOM Mapping ---
-    const chatOutput = document.getElementById('chat-output');
-    const userInput = document.getElementById('user-input');
-    const submitBtn = document.getElementById('submit-btn');
-    const typingIndicator = document.getElementById('typing-indicator');
-
-    const settingsBtn = document.getElementById('settings-btn');
-    const settingsModal = document.getElementById('settings-modal');
-    const closeBtn = document.querySelector('.close-btn');
-    const saveSettingsBtn = document.getElementById('save-settings-btn');
-    const clearHistoryBtn = document.getElementById('clear-history-btn');
-
-    const apiKeyInput = document.getElementById('api-key');
-    const maxTokensInput = document.getElementById('max-tokens');
-    const inlineModelSelect = document.getElementById('inline-model-select');
-
-    // Password Tool Custom Mapping 
-    const newPasswordInput = document.getElementById('new-password-input');
-    const generateHashBtn = document.getElementById('generate-hash-btn');
-    const hashOutputContainer = document.getElementById('hash-output-container');
-    const generatedHashText = document.getElementById('generated-hash-text');
-    const copyHashBtn = document.getElementById('copy-hash-btn');
-
-    // Multimodal Mapping
-    const fileUpload = document.getElementById('file-upload');
-    const mediaPreviewContainer = document.getElementById('media-preview-container');
-    const mediaPreviewImg = document.getElementById('media-preview-img');
-    const mediaPreviewName = document.getElementById('media-preview-name');
-    const removeMediaBtn = document.getElementById('remove-media-btn');
-
-  // Context Arrays
-    let chatHistory = []; 
-    let currentMedia = null;
-
-    // --- System Initialization ---
-    loadSettings();
-    loadHistory();
-    initializeIdentityGate(); 
-
     // --- Theme Controller & Settings Binder ---
     function syncThemeUI() {
         const savedTheme = localStorage.getItem('paicat_theme') || 'system';
@@ -164,17 +145,13 @@ document.addEventListener("DOMContentLoaded", () => {
             activeRadio.checked = true;
         }
 
-        // Bind automatically refreshing change event listeners to the switches
         document.querySelectorAll('input[name="paicat-theme-select"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 localStorage.setItem('paicat_theme', e.target.value);
-                // Automatically reload to instantly clean memory, shift variables, and render UI changes smoothly
                 window.location.reload();
             });
         });
     }
-    
-    // Execute inside your DOMContentLoaded load sequence
     syncThemeUI();
 
     if (maxTokensInput) {
@@ -203,20 +180,41 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- One-Click Clipboard Copy Logic ---
-    if (copyHashBtn && generatedHashText) {
-        copyHashBtn.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(generatedHashText.value);
-                const icon = copyHashBtn.querySelector('i');
+    // --- Cross-Browser One-Click Clipboard Copy Logic ---
+    async function secureCopyToClipboard(textToCopy, interfaceButton) {
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(textToCopy);
+            } else {
+                // Fallback method to guarantee execution on every custom/older mobile browser structure
+                const textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                textArea.style.position = "fixed"; 
+                textArea.style.left = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                document.execCommand('copy');
+                textArea.remove();
+            }
+            const icon = interfaceButton.querySelector('i');
+            if (icon) {
                 icon.className = 'fas fa-check';
                 icon.style.color = '#27ae60';
                 setTimeout(() => { icon.className = 'far fa-copy'; icon.style.color = ''; }, 2000);
-            } catch (err) { alert('Clipboard access denied by browser.'); }
+            }
+        } catch (err) { 
+            alert('Clipboard access denied or unverified by system context.'); 
+        }
+    }
+
+    if (copyHashBtn && generatedHashText) {
+        copyHashBtn.addEventListener('click', () => {
+            secureCopyToClipboard(generatedHashText.value, copyHashBtn);
         });
     }
 
- // --- Hardened Identity Verification Logic ---
+    // --- Hardened Identity Verification Logic ---
     async function initializeIdentityGate() {
         if (!localStorage.getItem('paicat_user_role')) {
             const setupChoice = confirm("Initialize PAICAT Core Configuration:\n\nAre you the Creator (Abhishek Tiwari)? Click 'OK' to authenticate. Click 'Cancel' to enter as a Guest User.");
@@ -247,8 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.reload(); 
         }
 
-        // --- DEVELOPER UNLOCK GATEWAY ---
-        // Runs automatically on page load. If role is 'creator', un-hide the model architecture selections.
         if (localStorage.getItem('paicat_user_role') === 'creator') {
             const modelWrapper = document.getElementById('developer-model-wrapper');
             if (modelWrapper) {
@@ -357,7 +353,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 let parsedHistory = JSON.parse(saved);
                 let needsSave = false;
                 
-                // Retroactively attach tracking IDs to old cache messages
                 parsedHistory = parsedHistory.map(msg => {
                     if (!msg.id) {
                         needsSave = true;
@@ -367,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 
                 chatHistory = parsedHistory;
-                if (needsSave) saveHistory(); // Save the newly generated IDs back to the browser cache
+                if (needsSave) saveHistory(); 
 
                 chatHistory.forEach(msg => {
                     const textPart = msg.parts.find(p => p.text)?.text || "";
@@ -394,7 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderAllMessages() {
         if(!chatOutput) return;
-        chatOutput.innerHTML = ''; // This definitively wipes the visual screen
+        chatOutput.innerHTML = ''; 
         chatHistory.forEach(msg => {
             const textPart = msg.parts.find(p => p.text)?.text || "";
             renderMessageToUI(msg.role === 'user' ? 'User' : 'PAICAT', textPart, null, msg.id);
@@ -404,19 +399,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Core Rewind & Regenerate Logic ---
     async function rewindAndRegenerate(targetId, newText, originalMedia) {
         const targetIndex = chatHistory.findIndex(msg => msg.id === targetId);
-        
         if (targetIndex !== -1) {
-            // Success: Slices the array at the exact point of the edited message
             chatHistory = chatHistory.slice(0, targetIndex);
         } else {
             console.error("Timeline disruption: Tracking ID missing. Unable to slice.");
         }
         
         saveHistory();
-        renderAllMessages(); // Re-renders the freshly sliced timeline
+        renderAllMessages(); 
         
-        appendToStateAndUI('User', newText, originalMedia); // Injects the edited prompt
-        await executeNetworkCall(); // Fires the new API request immediately
+        appendToStateAndUI('User', newText, originalMedia); 
+        await executeNetworkCall(); 
     }
 
     // --- Modernized UI Rendering with Action Overlays (Copy & Edit) ---
@@ -451,7 +444,6 @@ document.addEventListener("DOMContentLoaded", () => {
         contentDiv.innerHTML = contentHtml;
         msgDiv.appendChild(contentDiv);
         
-        // --- Dynamic Hover Actions ---
         const actionsDiv = document.createElement('div');
         actionsDiv.classList.add('message-actions');
         
@@ -461,14 +453,8 @@ document.addEventListener("DOMContentLoaded", () => {
         copyBtn.classList.add('message-action-btn');
         copyBtn.title = 'Copy Text';
         copyBtn.innerHTML = '<i class="far fa-copy"></i>';
-        copyBtn.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(text);
-                const icon = copyBtn.querySelector('i');
-                icon.className = 'fas fa-check';
-                icon.style.color = '#27ae60';
-                setTimeout(() => { icon.className = 'far fa-copy'; icon.style.color = ''; }, 2000);
-            } catch (err) { console.error('Copy failed', err); }
+        copyBtn.addEventListener('click', () => {
+            secureCopyToClipboard(text, copyBtn);
         });
         actionsDiv.appendChild(copyBtn);
 
@@ -510,7 +496,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     const newText = textarea.value.trim();
                     if(!newText) return;
                     
-                    // Lock button to prevent double-firing
                     updateBtn.disabled = true;
                     updateBtn.innerText = 'Updating...';
                     
@@ -560,13 +545,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if(chatOutput) chatOutput.scrollTop = chatOutput.scrollHeight;
     }
 
-   // --- Decoupled Network Execution Core ---
+    // --- Decoupled Network Execution Core ---
     async function executeNetworkCall() {
-        // (We removed the old API key check from here)
-
         if (submitBtn) { submitBtn.style.display = 'none'; submitBtn.disabled = true; }
 
-      // Check if the dropdown exists and is visible on the screen
         const modelSelectElement = document.getElementById('inline-model-select');
         const model = (modelSelectElement && modelSelectElement.offsetParent !== null) 
             ? modelSelectElement.value 
@@ -578,8 +560,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let success = false;
 
         const payloadContents = chatHistory.map(msg => ({ role: msg.role, parts: msg.parts }));
-
-        // CLOUDFLARE URL (KEEP THE /v1beta... PART AT THE END)
         const proxyUrl = `https://paicatgemapi.abhishekjogiya123.workers.dev/v1beta/models/${model}:generateContent`;
 
         while (attempts < maxAttempts && !success) {
@@ -590,7 +570,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             try {
-                // The fetch request now points to your Cloudflare Proxy URL
                 const response = await fetch(proxyUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -628,7 +607,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-       if(typingIndicator) typingIndicator.style.display = 'none';
+        if(typingIndicator) typingIndicator.style.display = 'none';
         if(userInput) {
             if(submitBtn) { submitBtn.disabled = false; submitBtn.style.display = userInput.value.trim().length > 0 ? 'flex' : 'none'; }
         }
@@ -640,7 +619,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const text = userInput.value.trim();
         if (!text && !currentMedia) return; 
 
-        // Hidden Creator Command Line Interface (CLI)
         if (text.startsWith('/')) {
             const args = text.split(' ');
             const cmd = args[0].toLowerCase();
@@ -669,13 +647,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if(submitBtn) submitBtn.disabled = false; return; 
         }
 
-       appendToStateAndUI('User', text, currentMedia);
+        appendToStateAndUI('User', text, currentMedia);
         userInput.value = '';
         clearMedia(); 
-        
-        // This command explicitly tells the mobile keyboard to close
         userInput.blur(); 
-        
         await executeNetworkCall();
     }
 
