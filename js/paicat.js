@@ -84,9 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadHistory();
     initializeIdentityGate(); 
 
-    if (!localStorage.getItem('gemini_api_key')) {
-        setTimeout(() => renderSystemMessage("System Offline: Insert API Key via settings ⚙️ before proceeding."), 500);
-    }
 
     if (maxTokensInput) {
         maxTokensInput.addEventListener('input', () => {
@@ -462,10 +459,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if(chatOutput) chatOutput.scrollTop = chatOutput.scrollHeight;
     }
 
-    // --- Decoupled Network Execution Core ---
+   // --- Decoupled Network Execution Core ---
     async function executeNetworkCall() {
-        const apiKey = localStorage.getItem('gemini_api_key');
-        if (!apiKey) { if(settingsModal) settingsModal.style.display = 'flex'; return; }
+        // (We removed the old API key check from here)
 
         if (submitBtn) { submitBtn.style.display = 'none'; submitBtn.disabled = true; }
 
@@ -476,8 +472,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const maxAttempts = 3; 
         let success = false;
 
-        // Clean payload strictly for Gemini API parameters (stripping our custom 'id' tags)
         const payloadContents = chatHistory.map(msg => ({ role: msg.role, parts: msg.parts }));
+
+        // CLOUDFLARE URL (KEEP THE /v1beta... PART AT THE END)
+        const proxyUrl = `https://paicatgemapi.abhishekjogiya123.workers.dev/v1beta/models/${model}:generateContent`;
 
         while (attempts < maxAttempts && !success) {
             attempts++;
@@ -487,7 +485,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+                // The fetch request now points to your Cloudflare Proxy URL
+                const response = await fetch(proxyUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -530,7 +529,6 @@ document.addEventListener("DOMContentLoaded", () => {
             userInput.focus();
         }
     }
-
     // --- Input Processor ---
     async function processQuery() {
         if(!userInput) return;
