@@ -280,30 +280,29 @@ document.addEventListener("DOMContentLoaded", () => {
         devModeBtn.addEventListener('click', async () => {
             const currentRole = localStorage.getItem('paicat_user_role');
 
-           if (currentRole === 'creator') {
+            if (currentRole === 'creator') {
                 // Logout Process
                 if(confirm("Are you sure you want to exit Developer Mode?")) {
                     // 1. Demote the user role back to guest
                     localStorage.setItem('paicat_user_role', 'guest');
                     localStorage.setItem('paicat_user_display_name', 'Guest User');
                     
-                    // 2. Purge chat history from local storage
-                    // (Change 'paicat_messages' if your actual storage key is named differently)
-                    localStorage.removeItem('paicat_messages'); 
-                    localStorage.removeItem('chat_history'); 
+                    // 2. PURGE THE CORRECT LOCAL STORAGE KEY
+                    localStorage.removeItem('gemini_chat_history'); 
                     
-                    // 3. Clear the DOM immediately for instant visual feedback
-                    // (Change 'chat-box' to the exact ID of your message container)
-                    const chatBox = document.getElementById('chat-box'); 
-                    if (chatBox) {
-                        chatBox.innerHTML = '';
+                    // 3. Clear the active memory array
+                    chatHistory = [];
+                    
+                    // 4. CLEAR THE CORRECT HTML CONTAINER ID ('chat-output')
+                    const chatOutput = document.getElementById('chat-output'); 
+                    if (chatOutput) {
+                        chatOutput.innerHTML = '';
                     }
 
-                    // 4. Reload to re-initialize the clean guest state
+                    // 5. Reload to re-initialize the clean guest state
                     window.location.reload(); 
                 }
             } else {
-               
                 // Login Process
                 const passcode = prompt("Enter your private Creator Key / Passcode to authenticate:");
                 if (passcode) {
@@ -314,7 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         localStorage.setItem('paicat_user_role', 'creator');
                         localStorage.setItem('paicat_user_display_name', 'Abhishek Tiwari');
                         alert("Identity Cryptographically Authenticated. Welcome back, Tiwari Ji.");
-                        window.location.reload(); // Reloads to unlock developer prompts and UI
+                        window.location.reload(); 
                     } else {
                         alert("Authentication Failure. Cryptographic signatures do not match.");
                     }
@@ -322,7 +321,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
     
     // --- Dynamic Submit Button Logic ---
     if (userInput && submitBtn) {
