@@ -1,3 +1,18 @@
+// --- Mobile Keyboard Viewport Locker ---
+if (window.visualViewport) {
+    const lockMobileViewport = () => {
+        // Measures the exact height above the keyboard and sets a global CSS variable
+        document.documentElement.style.setProperty('--viewport-height', `${window.visualViewport.height}px`);
+    };
+    
+    // Watch for keyboard opening, closing, or screen rotation shifts
+    window.visualViewport.addEventListener('resize', lockMobileViewport);
+    window.visualViewport.addEventListener('scroll', lockMobileViewport);
+    
+    // Initialize immediately on load
+    window.addEventListener('DOMContentLoaded', lockMobileViewport);
+}
+
 // --- Early Theme Resolver ---
 function applyActiveTheme() {
     const savedTheme = localStorage.getItem('paicat_theme') || 'system';
