@@ -669,8 +669,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 case '/clear':
                 case '/purge':
                     chatHistory = []; localStorage.removeItem('gemini_chat_history'); if(chatOutput) chatOutput.innerHTML = ''; renderSystemMessage("System Context Purged."); break;
-                case '/logout':
-                    localStorage.setItem('paicat_user_role', 'guest'); localStorage.setItem('paicat_user_display_name', 'Guest User'); renderSystemMessage("Creator Session Terminated. Reloading..."); setTimeout(() => window.location.reload(), 1000); break;
+               case '/logout':
+                    // 1. Demote to guest
+                    localStorage.setItem('paicat_user_role', 'guest'); 
+                    localStorage.setItem('paicat_user_display_name', 'Guest User'); 
+                    
+                    // 2. Wipe memory and UI (identical to your /clear command)
+                    chatHistory = []; 
+                    localStorage.removeItem('gemini_chat_history'); 
+                    if(chatOutput) chatOutput.innerHTML = ''; 
+                    
+                    // 3. Feedback and reload
+                    renderSystemMessage("Creator Session Terminated. Wiping history and reloading..."); 
+                    setTimeout(() => window.location.reload(), 1000); 
+                    break;
                 case '/tokens':
                     if (args[1] && !isNaN(args[1])) { let newCap = Math.min(parseInt(args[1]), 6000); localStorage.setItem('gemini_max_tokens', newCap); if(maxTokensInput) maxTokensInput.value = newCap; renderSystemMessage(`Limit updated to ${newCap}.`); } else { renderSystemMessage("Syntax: /tokens [num]"); } break;
                 case '/model':
