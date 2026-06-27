@@ -623,12 +623,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        if(typingIndicator) typingIndicator.style.display = 'none';
+       if(typingIndicator) typingIndicator.style.display = 'none';
         if(userInput) {
             if(submitBtn) { submitBtn.disabled = false; submitBtn.style.display = userInput.value.trim().length > 0 ? 'flex' : 'none'; }
-            userInput.focus();
         }
     }
+        
     // --- Input Processor ---
     async function processQuery() {
         if(!userInput) return;
@@ -664,9 +664,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if(submitBtn) submitBtn.disabled = false; return; 
         }
 
-        appendToStateAndUI('User', text, currentMedia);
+       appendToStateAndUI('User', text, currentMedia);
         userInput.value = '';
         clearMedia(); 
+        
+        // This command explicitly tells the mobile keyboard to close
+        userInput.blur(); 
         
         await executeNetworkCall();
     }
