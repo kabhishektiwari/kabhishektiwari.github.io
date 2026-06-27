@@ -54,10 +54,17 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    height: 100vh;
+    
+    /* 1. THE MOBILE KEYBOARD FIX: Dynamic Viewport Height */
+    height: 100dvh; 
+    
     width: 100vw;
     color: var(--text-color);
-    overflow: hidden;
+    
+    /* 2. ENABLE PULL-TO-REFRESH: Remove vertical overflow block */
+    overflow-x: hidden; 
+    overflow-y: auto;
+    
     transition: background-color 1s ease, background-image 1s ease, color 0.3s ease;
 }
 
