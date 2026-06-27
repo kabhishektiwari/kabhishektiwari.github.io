@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- Hardened Identity Verification Logic ---
+ // --- Hardened Identity Verification Logic ---
     async function initializeIdentityGate() {
         if (!localStorage.getItem('paicat_user_role')) {
             const setupChoice = confirm("Initialize PAICAT Core Configuration:\n\nAre you the Creator (Abhishek Tiwari)? Click 'OK' to authenticate. Click 'Cancel' to enter as a Guest User.");
@@ -153,6 +153,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem('paicat_user_display_name', 'Guest User');
             }
             window.location.reload(); 
+        }
+
+        // --- DEVELOPER UNLOCK GATEWAY ---
+        // Runs automatically on page load. If role is 'creator', un-hide the model architecture selections.
+        if (localStorage.getItem('paicat_user_role') === 'creator') {
+            const modelWrapper = document.getElementById('developer-model-wrapper');
+            if (modelWrapper) {
+                modelWrapper.style.display = 'block'; 
+            }
         }
     }
 
@@ -465,7 +474,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (submitBtn) { submitBtn.style.display = 'none'; submitBtn.disabled = true; }
 
-        const model = inlineModelSelect ? inlineModelSelect.value : (localStorage.getItem('gemini_model') || 'gemini-2.5-flash');
+      // Check if the dropdown exists and is visible on the screen
+        const modelSelectElement = document.getElementById('inline-model-select');
+        const model = (modelSelectElement && modelSelectElement.offsetParent !== null) 
+            ? modelSelectElement.value 
+            : 'gemini-3.1-flash-lite';
         const maxTokens = Math.min(parseInt(localStorage.getItem('gemini_max_tokens')) || 6000, 6000);
         
         let attempts = 0;
