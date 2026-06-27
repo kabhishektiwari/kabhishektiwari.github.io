@@ -280,14 +280,30 @@ document.addEventListener("DOMContentLoaded", () => {
         devModeBtn.addEventListener('click', async () => {
             const currentRole = localStorage.getItem('paicat_user_role');
 
-            if (currentRole === 'creator') {
+           if (currentRole === 'creator') {
                 // Logout Process
                 if(confirm("Are you sure you want to exit Developer Mode?")) {
+                    // 1. Demote the user role back to guest
                     localStorage.setItem('paicat_user_role', 'guest');
                     localStorage.setItem('paicat_user_display_name', 'Guest User');
-                    window.location.reload(); // Reloads to reset system prompts and UI
+                    
+                    // 2. Purge chat history from local storage
+                    // (Change 'paicat_messages' if your actual storage key is named differently)
+                    localStorage.removeItem('paicat_messages'); 
+                    localStorage.removeItem('chat_history'); 
+                    
+                    // 3. Clear the DOM immediately for instant visual feedback
+                    // (Change 'chat-box' to the exact ID of your message container)
+                    const chatBox = document.getElementById('chat-box'); 
+                    if (chatBox) {
+                        chatBox.innerHTML = '';
+                    }
+
+                    // 4. Reload to re-initialize the clean guest state
+                    window.location.reload(); 
                 }
             } else {
+               
                 // Login Process
                 const passcode = prompt("Enter your private Creator Key / Passcode to authenticate:");
                 if (passcode) {
