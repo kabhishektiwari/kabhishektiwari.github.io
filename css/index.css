@@ -51,6 +51,24 @@ margin: 10px auto 20px auto;
   border-radius: 50%;
 }
 
+/* Stock Ticker Styling */
+.stock-ticker-section {
+  width: 100%;
+  margin: 20px 0; /* Adds breathing room between the tabs and the ticker */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow */
+  border-radius: 4px; /* Optional: rounds the edges */
+  overflow: hidden; /* Ensures the widget respects the border radius */
+}
+
+/* Ensure the TradingView container takes up full width */
+.tradingview-widget-container {
+  width: 100% !important;
+  height: auto !important;
+}
+
+
+
+
 /* Clickable Editorial Tags */
 .story-tag {
   font-size: 13px;
